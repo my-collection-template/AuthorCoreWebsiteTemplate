@@ -4,9 +4,9 @@ using AuthorCoreWebsiteTemplate.Models;
 
 namespace AuthorCoreWebsiteTemplate.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class AuthorCoreWebDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public AuthorCoreWebDbContext(DbContextOptions<AuthorCoreWebDbContext> options)
             : base(options)
         {
         }
