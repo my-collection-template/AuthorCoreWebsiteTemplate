@@ -1,5 +1,3 @@
-using System;
-
 namespace AuthorCoreWebsiteTemplate.Models
 {
     public class ErrorViewModel
