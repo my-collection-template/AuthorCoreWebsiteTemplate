@@ -53,11 +53,27 @@ namespace AuthorCoreWebsiteTemplate.Migrations
                 {
                     BlogId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Url = table.Column<string>(nullable: true)
+                    Title = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Blogs", x => x.BlogId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Samples",
+                columns: table => new
+                {
+                    SampleId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Samples", x => x.SampleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,27 +182,6 @@ namespace AuthorCoreWebsiteTemplate.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    PostId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    BlogId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.PostId);
-                    table.ForeignKey(
-                        name: "FK_Posts_Blogs_BlogId",
-                        column: x => x.BlogId,
-                        principalTable: "Blogs",
-                        principalColumn: "BlogId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -225,11 +220,6 @@ namespace AuthorCoreWebsiteTemplate.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_BlogId",
-                table: "Posts",
-                column: "BlogId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -250,16 +240,16 @@ namespace AuthorCoreWebsiteTemplate.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "Blogs");
+
+            migrationBuilder.DropTable(
+                name: "Samples");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Blogs");
         }
     }
 }

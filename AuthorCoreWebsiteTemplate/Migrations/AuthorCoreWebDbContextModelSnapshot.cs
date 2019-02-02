@@ -25,30 +25,30 @@ namespace AuthorCoreWebsiteTemplate.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Url");
+                    b.Property<string>("Content");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("BlogId");
 
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("AuthorCoreWebsiteTemplate.Models.Post", b =>
+            modelBuilder.Entity("AuthorCoreWebsiteTemplate.Models.Sample", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<int>("SampleId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BlogId");
 
                     b.Property<string>("Content");
 
                     b.Property<string>("Title");
 
-                    b.HasKey("PostId");
+                    b.HasKey("SampleId");
 
-                    b.HasIndex("BlogId");
-
-                    b.ToTable("Posts");
+                    b.ToTable("Samples");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -214,14 +214,6 @@ namespace AuthorCoreWebsiteTemplate.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("AuthorCoreWebsiteTemplate.Models.Post", b =>
-                {
-                    b.HasOne("AuthorCoreWebsiteTemplate.Models.Blog", "Blog")
-                        .WithMany("Posts")
-                        .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

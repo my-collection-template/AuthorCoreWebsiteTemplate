@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AuthorCoreWebsiteTemplate.Data;
 using AuthorCoreWebsiteTemplate.Models;
+using System.Security.Claims;
 
 namespace AuthorCoreWebsiteTemplate.Controllers
 {
@@ -20,9 +18,10 @@ namespace AuthorCoreWebsiteTemplate.Controllers
         }
 
         // GET: Blogs
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Blogs.ToListAsync());
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return View(_context.Blogs.Where(blog => blog.UserId == userId));
         }
 
         // GET: Blogs/Details/5
@@ -54,15 +53,20 @@ namespace AuthorCoreWebsiteTemplate.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Url")] Blog blog)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,UserEmail,UserId,Content")] Blog blog)
         {
-            if (ModelState.IsValid)
+            // This is how the magic happens
+            if (!ModelState.IsValid)
             {
-                _context.Add(blog);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(blog);
             }
-            return View(blog);
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            blog.UserId = userId;
+
+            _context.Add(blog);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Blogs/Edit/5
@@ -86,7 +90,7 @@ namespace AuthorCoreWebsiteTemplate.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Url")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,UserEmail,UserId,Content")] Blog blog)
         {
             if (id != blog.BlogId)
             {
