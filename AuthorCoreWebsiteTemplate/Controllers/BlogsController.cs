@@ -101,6 +101,9 @@ namespace AuthorCoreWebsiteTemplate.Controllers
             {
                 try
                 {
+                    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    blog.UserId = userId;
+
                     _context.Update(blog);
                     await _context.SaveChangesAsync();
                 }
