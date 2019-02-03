@@ -39,7 +39,13 @@ namespace AuthorCoreWebsiteTemplate.Controllers
                 return NotFound();
             }
 
-            return View(blog);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (blog.UserId == userId)
+            {
+                return View(blog);
+            }
+            // If userId does not match proper details page by manipulating id this will redirect to Blogs
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Blogs/Create
@@ -82,7 +88,14 @@ namespace AuthorCoreWebsiteTemplate.Controllers
             {
                 return NotFound();
             }
-            return View(blog);
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (blog.UserId == userId)
+            {
+                return View(blog);
+            }
+            // If userId does not match proper edit page by manipulating id this will redirect to Blogs
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Blogs/Edit/5
@@ -138,7 +151,13 @@ namespace AuthorCoreWebsiteTemplate.Controllers
                 return NotFound();
             }
 
-            return View(blog);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (blog.UserId == userId)
+            {
+                return View(blog);
+            }
+            // If userId does not match proper delete page by manipulating id this will redirect to Blogs
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Blogs/Delete/5
